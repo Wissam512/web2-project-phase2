@@ -1,0 +1,71 @@
+/* Light Theme Variables */
+[data-theme='light'] {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --text-primary: #2c3e50;
+  --text-secondary: #666666;
+  --border-color: #e1e1e1;
+  --card-bg: #ffffff;
+  --card-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  --btn-primary-bg: linear-gradient(45deg, #2c3e50, #3498db);
+  --btn-primary-text: #ffffff;
+  --btn-secondary-bg: #ffffff;
+  --btn-secondary-text: #2c3e50;
+  --navbar-bg: #ffffff;
+  --navbar-text: #2c3e50;
+  --input-bg: #ffffff;
+  --input-text: #2c3e50;
+  --input-border: #ced4da;
+  --toast-bg: #ffffff;
+  --toast-text: #2c3e50;
+}
+
+/* Dark Theme Variables */
+[data-theme='dark'] {
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #2d2d2d;
+  --text-primary: #ffffff;
+  --text-secondary: #b3b3b3;
+  --border-color: #404040;
+  --card-bg: #2d2d2d;
+  --card-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  --btn-primary-bg: linear-gradient(45deg, #3498db, #2980b9);
+  --btn-primary-text: #ffffff;
+  --btn-secondary-bg: #2d2d2d;
+  --btn-secondary-text: #ffffff;
+  --navbar-bg: #2d2d2d;
+  --navbar-text: #ffffff;
+  --input-bg: #333333;
+  --input-text: #ffffff;
+  --input-border: #404040;
+  --toast-bg: #2d2d2d;
+  --toast-text: #ffffff;
+}
+
+/* Base Styles */
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+  margin-left: 15px;
+}
+
+.theme-toggle:hover {
+  background-color: var(--bg-secondary);
+}
