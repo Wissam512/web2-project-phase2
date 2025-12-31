@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import '../Assets/Login.css'; // Reusing some styles
+import API_URL from '../apiConfig';
 
 function AdminDashboard() {
     const username = localStorage.getItem('username');
@@ -8,7 +9,7 @@ function AdminDashboard() {
 
     useEffect(() => {
         const fetchOrders = () => {
-            fetch('/api/orders')
+            fetch(`${API_URL}/api/orders`)
                 .then(res => {
                     if (!res.ok) throw new Error("Server returned " + res.status);
                     return res.json();
@@ -21,7 +22,7 @@ function AdminDashboard() {
         };
 
         const fetchUsers = () => {
-            fetch('/api/users')
+            fetch(`${API_URL}/api/users`)
                 .then(res => res.json())
                 .then(data => setUsers(data))
                 .catch(err => console.error("Error fetching users:", err));
@@ -32,7 +33,7 @@ function AdminDashboard() {
     }, []);
 
     const handleStatusChange = (orderId, newStatus) => {
-        fetch(`/api/orders/${orderId}/status`, {
+        fetch(`${API_URL}/api/orders/${orderId}/status`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ status: newStatus })

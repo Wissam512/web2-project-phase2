@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Assets/ModernLogin.css';
+import API_URL from './apiConfig';
 
 function Login() {
     const [isRegistering, setIsRegistering] = useState(false);
@@ -26,7 +27,7 @@ function Login() {
         e.preventDefault();
         setError('');
 
-        const endpoint = isRegistering ? '/api/auth/register' : '/api/auth/login';
+        const endpoint = isRegistering ? `${API_URL}/api/auth/register` : `${API_URL}/api/auth/login`;
 
         try {
             const response = await fetch(endpoint, {
@@ -78,19 +79,19 @@ function Login() {
                 <div className="hero-content">
                     <div className="character-group">
                         <div className="character-group">
-                        {[1, 2, 3, 4, 5].map((num) => (
-                            <div key={num} className={`character char-${num} ${focusedInput === 'password' ? 'password-mode' : ''}`}>
-                                <div className="move-target">
-                                    <div className="eye eye-left"></div>
-                                    <div className="eye eye-right"></div>
+                            {[1, 2, 3, 4, 5].map((num) => (
+                                <div key={num} className={`character char-${num} ${focusedInput === 'password' ? 'password-mode' : ''}`}>
+                                    <div className="move-target">
+                                        <div className="eye eye-left"></div>
+                                        <div className="eye eye-right"></div>
+                                    </div>
+                                    <div className="character-smile"></div>
+                                    <div className="hands">
+                                        <div className="hand hand-left"></div>
+                                        <div className="hand hand-right"></div>
+                                    </div>
                                 </div>
-                                <div className="character-smile"></div>
-                                <div className="hands">
-                                    <div className="hand hand-left"></div>
-                                    <div className="hand hand-right"></div>
-                                </div>
-                            </div>
-                        ))}
+                            ))}
                         </div>
                     </div>
                     <div className="welcome-text">

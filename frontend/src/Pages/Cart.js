@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { CartContext } from "../context/CartContext";
 import "../Assets/Cart.css";
 import BottomToast from "../Components/BottomToast";
+import API_URL from "../apiConfig";
 
 const Cart = () => {
   const { cartItems, removeFromCart, clearCart, updateQuantity, getCartTotal } = useContext(CartContext);
@@ -34,7 +35,7 @@ const Cart = () => {
     }
 
     try {
-      const response = await fetch('/api/orders', {
+      const response = await fetch(`${API_URL}/api/orders`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
