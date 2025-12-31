@@ -9,6 +9,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+console.log("--- ENVIRONMENT DIAGNOSTICS ---");
+console.log("Detected Keys:", Object.keys(process.env).filter(k => k.includes("DB") || k.includes("MYSQL")));
+
 const poolConfig = {
     // Priority: Railway provided vars -> Custom DB_HOST -> Fallback localhost
     host: process.env.MYSQLHOST || process.env.MYSQL_HOST || process.env.DB_HOST || '127.0.0.1',
@@ -24,20 +27,28 @@ const poolConfig = {
 // If Railway provides a full URL, use it
 const connectString = process.env.MYSQL_URL || process.env.DATABASE_URL;
 if (connectString) {
-    console.log("Found MYSQL_URL/DATABASE_URL, using that for connection.");
+    console.log("PLATFORM INFO: Using MYSQL_URL/DATABASE_URL");
 }
 
-console.log("Attempting database connection with HOST:", poolConfig.host);
+console.log("FINAL CONFIG (Sanitized):", {
+    host: poolConfig.host,
+    user: poolConfig.user,
+    database: poolConfig.database,
+    port: poolConfig.port,
+    usingUrl: !!connectString
+});
 
 const db = mysql.createPool(connectString || poolConfig);
 
 // Test connection on startup
 db.getConnection((err, connection) => {
     if (err) {
-        console.error("CRITICAL: Error connecting to the database:", err.message);
-        console.error("Full error details:", err);
+        console.error("DATABASE CONNECTION ERROR!");
+        console.error("Code:", err.code);
+        console.error("Attempted Host:", err.address || poolConfig.host);
+        console.error("Message:", err.message);
     } else {
-        console.log("Successfully connected to the MySQL database.");
+        console.log("DATABASE CONNECTION SUCCESSFUL!");
         connection.release();
         createTables();
     }
