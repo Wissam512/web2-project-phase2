@@ -10,14 +10,19 @@ app.use(cors());
 app.use(express.json());
 
 console.log("--- ENVIRONMENT DIAGNOSTICS ---");
-const keys = Object.keys(process.env).filter(k => k.includes("DB") || k.includes("MYSQL") || k.includes("PORT"));
-console.log("Detected Keys:", keys);
+const allKeys = Object.keys(process.env);
+const relevantKeys = allKeys.filter(k => k.includes("DB") || k.includes("MYSQL") || k.includes("PORT"));
+console.log("Relevant Keys Found:", relevantKeys);
 
-// Helper to get real values and ignore literal names or empties
+// Helper to get real values and ignore literal names or placeholders
 const getEnv = (keys, fallback) => {
+    const commonNames = ['DB_HOST', 'DB_USER', 'DB_PASS', 'DB_NAME', 'DB_PORT', 'MYSQLHOST', 'MYSQLUSER', 'MYSQLPASSWORD', 'MYSQLDATABASE', 'MYSQLPORT', 'MYSQL_HOST', 'MYSQL_USER', 'MYSQL_PASSWORD', 'MYSQL_DATABASE', 'MYSQL_PORT', 'MYSQL_URL', 'DATABASE_URL'];
     for (const key of keys) {
-        const val = process.env[key];
-        if (val && val !== key && val !== `\${${key}}`) return val;
+        let val = process.env[key];
+        if (val) val = val.trim();
+        // Skip if value is empty, or if value is literally a common variable name
+        if (val && !commonNames.includes(val) && val !== `\${${key}}`) return val;
+        if (val) console.log(`Skipping key "${key}" because its value "${val}" looks like a label/placeholder.`);
     }
     return fallback;
 };
