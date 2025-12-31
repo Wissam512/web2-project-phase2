@@ -9,7 +9,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const db = mysql.createPool({
+const poolConfig = {
     host: process.env.DB_HOST || process.env.MYSQLHOST || '127.0.0.1',
     user: process.env.DB_USER || process.env.MYSQLUSER || 'root',
     password: process.env.DB_PASS || process.env.MYSQLPASSWORD || '',
@@ -18,16 +18,26 @@ const db = mysql.createPool({
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0
+};
+
+console.log("Attempting to connect to database with config:", {
+    host: poolConfig.host,
+    user: poolConfig.user,
+    database: poolConfig.database,
+    port: poolConfig.port,
+    hasPassword: !!poolConfig.password
 });
+
+const db = mysql.createPool(poolConfig);
 
 // Test connection on startup
 db.getConnection((err, connection) => {
     if (err) {
-        console.error("Error connecting to the database:", err);
+        console.error("CRITICAL: Error connecting to the database:", err.message);
+        console.error("Full error details:", err);
     } else {
-        console.log("Connected to the MySQL database via pool.");
+        console.log("Successfully connected to the MySQL database.");
         connection.release();
-        // Ensure tables exist on startup
         createTables();
     }
 });
