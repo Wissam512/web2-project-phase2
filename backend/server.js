@@ -10,25 +10,25 @@ app.use(cors());
 app.use(express.json());
 
 const poolConfig = {
-    host: process.env.DB_HOST || process.env.MYSQLHOST || '127.0.0.1',
-    user: process.env.DB_USER || process.env.MYSQLUSER || 'root',
-    password: process.env.DB_PASS || process.env.MYSQLPASSWORD || '',
-    database: process.env.DB_NAME || process.env.MYSQLDATABASE || 'my_project_db',
-    port: process.env.DB_PORT || process.env.MYSQLPORT || 3306,
+    host: process.env.DB_HOST || process.env.MYSQLHOST || process.env.MYSQL_HOST || '127.0.0.1',
+    user: process.env.DB_USER || process.env.MYSQLUSER || process.env.MYSQL_USER || 'root',
+    password: process.env.DB_PASS || process.env.MYSQLPASSWORD || process.env.MYSQL_PASSWORD || '',
+    database: process.env.DB_NAME || process.env.MYSQLDATABASE || process.env.MYSQL_DATABASE || 'my_project_db',
+    port: process.env.DB_PORT || process.env.MYSQLPORT || process.env.MYSQL_PORT || 3306,
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0
 };
 
-console.log("Attempting to connect to database with config:", {
-    host: poolConfig.host,
-    user: poolConfig.user,
-    database: poolConfig.database,
-    port: poolConfig.port,
-    hasPassword: !!poolConfig.password
-});
+// If Railway provides a full URL, use it
+const connectString = process.env.MYSQL_URL || process.env.DATABASE_URL;
+if (connectString) {
+    console.log("Found MYSQL_URL/DATABASE_URL, using that for connection.");
+}
 
-const db = mysql.createPool(poolConfig);
+console.log("Attempting database connection with HOST:", poolConfig.host);
+
+const db = mysql.createPool(connectString || poolConfig);
 
 // Test connection on startup
 db.getConnection((err, connection) => {
