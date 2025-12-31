@@ -6,14 +6,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const app = express();
-// Allow CORS for the frontend on GitHub Pages
-app.use(cors({
-    origin: [
-        'http://localhost:3000',
-        'https://Wissam512.github.io'
-    ],
-    credentials: true
-}));
+app.use(cors());
 app.use(express.json());
 
 const db = mysql.createPool({
