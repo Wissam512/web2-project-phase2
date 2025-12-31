@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/web2-project-phase2/static/css/main.6a49469d.css",
+    "main.js": "/web2-project-phase2/static/js/main.4c2ad79c.js",
+    "static/js/453.ee87fd06.chunk.js": "/web2-project-phase2/static/js/453.ee87fd06.chunk.js",
+    "static/media/Smart Watch.jpg": "/web2-project-phase2/static/media/Smart Watch.87b1fd3fcb5b6a43c08d.jpg",
+    "index.html": "/web2-project-phase2/index.html",
+    "main.6a49469d.css.map": "/web2-project-phase2/static/css/main.6a49469d.css.map",
+    "main.4c2ad79c.js.map": "/web2-project-phase2/static/js/main.4c2ad79c.js.map",
+    "453.ee87fd06.chunk.js.map": "/web2-project-phase2/static/js/453.ee87fd06.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.6a49469d.css",
+    "static/js/main.4c2ad79c.js"
+  ]
+}
