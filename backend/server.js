@@ -10,24 +10,32 @@ app.use(cors());
 app.use(express.json());
 
 console.log("--- ENVIRONMENT DIAGNOSTICS ---");
-console.log("Detected Keys:", Object.keys(process.env).filter(k => k.includes("DB") || k.includes("MYSQL")));
+const keys = Object.keys(process.env).filter(k => k.includes("DB") || k.includes("MYSQL") || k.includes("PORT"));
+console.log("Detected Keys:", keys);
+
+// Helper to get real values and ignore literal names or empties
+const getEnv = (keys, fallback) => {
+    for (const key of keys) {
+        const val = process.env[key];
+        if (val && val !== key && val !== `\${${key}}`) return val;
+    }
+    return fallback;
+};
 
 const poolConfig = {
-    // Priority: Railway provided vars -> Custom DB_HOST -> Fallback localhost
-    host: process.env.MYSQLHOST || process.env.MYSQL_HOST || process.env.DB_HOST || '127.0.0.1',
-    user: process.env.MYSQLUSER || process.env.MYSQL_USER || process.env.DB_USER || 'root',
-    password: process.env.MYSQLPASSWORD || process.env.MYSQL_PASSWORD || process.env.DB_PASS || '',
-    database: process.env.MYSQLDATABASE || process.env.MYSQL_DATABASE || process.env.DB_NAME || 'my_project_db',
-    port: process.env.MYSQLPORT || process.env.MYSQL_PORT || process.env.DB_PORT || 3306,
+    host: getEnv(['MYSQLHOST', 'MYSQL_HOST', 'DB_HOST'], '127.0.0.1'),
+    user: getEnv(['MYSQLUSER', 'MYSQL_USER', 'DB_USER'], 'root'),
+    password: getEnv(['MYSQLPASSWORD', 'MYSQL_PASSWORD', 'DB_PASS'], ''),
+    database: getEnv(['MYSQLDATABASE', 'MYSQL_DATABASE', 'DB_NAME'], 'my_project_db'),
+    port: getEnv(['MYSQLPORT', 'MYSQL_PORT', 'DB_PORT'], 3306),
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0
 };
 
-// If Railway provides a full URL, use it
-const connectString = process.env.MYSQL_URL || process.env.DATABASE_URL;
+const connectString = getEnv(['MYSQL_URL', 'DATABASE_URL'], null);
 if (connectString) {
-    console.log("PLATFORM INFO: Using MYSQL_URL/DATABASE_URL");
+    console.log("PLATFORM INFO: Found valid Connection String");
 }
 
 console.log("FINAL CONFIG (Sanitized):", {
@@ -35,6 +43,7 @@ console.log("FINAL CONFIG (Sanitized):", {
     user: poolConfig.user,
     database: poolConfig.database,
     port: poolConfig.port,
+    hasPassword: !!poolConfig.password,
     usingUrl: !!connectString
 });
 
