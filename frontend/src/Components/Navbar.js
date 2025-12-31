@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { CartContext } from "../context/CartContext";
 import { ThemeContext } from "../context/ThemeContext";
 
-export default function Navbar() {
+export default function Navbar({ onLogout }) {
   const { cartItems } = useContext(CartContext);
   const { isDarkMode, toggleTheme } = useContext(ThemeContext);
 
@@ -49,11 +49,7 @@ export default function Navbar() {
         </button>
         <button
           className="nav-link logout-btn"
-          onClick={() => {
-            localStorage.removeItem('token');
-            localStorage.removeItem('username');
-            window.location.href = '/';
-          }}
+          onClick={onLogout}
           style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'inherit', fontSize: '1rem', marginLeft: '10px' }}
         >
           <span>🚪</span>

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './Assets/ModernLogin.css';
 import API_URL from './apiConfig';
 
-function Login() {
+function Login({ onLogin }) {
     const [isRegistering, setIsRegistering] = useState(false);
     const [focusedInput, setFocusedInput] = useState(null);
     const [eyePosition, setEyePosition] = useState({ x: 0, y: 0 });
@@ -47,13 +47,14 @@ function Login() {
                 setError('');
                 alert('Registration successful! Please login.');
             } else {
-                localStorage.setItem('token', data.token);
-                localStorage.setItem('username', data.username);
+                // Call the onLogin prop passed from App.js to update the global auth state
+                onLogin(data);
 
+                // Use navigate for client-side routing instead of window.location.href
                 if (data.role === 'admin') {
-                    window.location.href = '/admin';
+                    navigate('/admin');
                 } else {
-                    window.location.href = '/';
+                    navigate('/');
                 }
             }
         } catch (err) {

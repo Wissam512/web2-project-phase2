@@ -61,7 +61,20 @@ function AdminDashboard() {
     return (
         <div style={{ padding: '20px', maxWidth: '1000px', margin: '0 auto' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
-                <h1>Admin Dashboard</h1>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                    <h1>Admin Dashboard</h1>
+                    <span style={{
+                        padding: '4px 12px',
+                        borderRadius: '20px',
+                        fontSize: '0.8rem',
+                        fontWeight: 'bold',
+                        background: API_URL.includes('railway') ? '#d1fae5' : '#dbeafe',
+                        color: API_URL.includes('railway') ? '#065f46' : '#1e40af',
+                        border: `1px solid ${API_URL.includes('railway') ? '#10b981' : '#3b82f6'}`
+                    }}>
+                        {API_URL.includes('railway') ? '● CLOUD STORAGE' : '○ LOCAL STORAGE'}
+                    </span>
+                </div>
                 <div>
                     <span>Welcome, <strong>{username}</strong>!</span>
                     <button className="auth-btn" onClick={handleLogout} style={{ marginLeft: '15px', padding: '5px 15px', fontSize: '0.9rem' }}>
