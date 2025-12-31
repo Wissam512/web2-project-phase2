@@ -10,11 +10,12 @@ app.use(cors());
 app.use(express.json());
 
 const poolConfig = {
-    host: process.env.DB_HOST || process.env.MYSQLHOST || process.env.MYSQL_HOST || '127.0.0.1',
-    user: process.env.DB_USER || process.env.MYSQLUSER || process.env.MYSQL_USER || 'root',
-    password: process.env.DB_PASS || process.env.MYSQLPASSWORD || process.env.MYSQL_PASSWORD || '',
-    database: process.env.DB_NAME || process.env.MYSQLDATABASE || process.env.MYSQL_DATABASE || 'my_project_db',
-    port: process.env.DB_PORT || process.env.MYSQLPORT || process.env.MYSQL_PORT || 3306,
+    // Priority: Railway provided vars -> Custom DB_HOST -> Fallback localhost
+    host: process.env.MYSQLHOST || process.env.MYSQL_HOST || process.env.DB_HOST || '127.0.0.1',
+    user: process.env.MYSQLUSER || process.env.MYSQL_USER || process.env.DB_USER || 'root',
+    password: process.env.MYSQLPASSWORD || process.env.MYSQL_PASSWORD || process.env.DB_PASS || '',
+    database: process.env.MYSQLDATABASE || process.env.MYSQL_DATABASE || process.env.DB_NAME || 'my_project_db',
+    port: process.env.MYSQLPORT || process.env.MYSQL_PORT || process.env.DB_PORT || 3306,
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0
